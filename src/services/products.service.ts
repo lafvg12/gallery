@@ -9,7 +9,7 @@ export class ProductsService {
       id: 1,
       name: 'Tomate',
       description: 'Un nuevo producto',
-      price: 1000,
+      address: 'afaf',
     },
   ];
   getAll() {
