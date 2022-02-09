@@ -25,6 +25,7 @@ export class ServiceService {
   }
 
   create(payload: CreateServiceDto) {
+    console.log(payload);
     this.counter++;
     const service = {
       id: this.counter,
