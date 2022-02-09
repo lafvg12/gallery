@@ -1,11 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Product } from '../entities/products.entity';
+import { Company } from '../entities/company.entity';
 import { CreateCompanyDto, UpdateCompanyDto } from '../dtos/companies.dto';
 
 @Injectable()
 export class CompaniesService {
   private counter = 1;
-  private companies: Product[] = [
+  private companies: Company[] = [
     {
       id: 1,
       name: 'tomato',
@@ -47,6 +47,9 @@ export class CompaniesService {
   }
   delete(id: number) {
     const deleteId = this.companies.findIndex((x) => x.id === id);
+    if (deleteId === -1) {
+      throw new NotFoundException('product not found');
+    }
     const eliminated = this.companies.splice(deleteId, 1);
     return eliminated;
   }
