@@ -1,8 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+
 import { UpdateServiceDto, CreateServiceDto } from '../dtos/services.dto';
 
 @Injectable()
 export class ServiceService {
+  constructor(private config: ConfigService) {}
   private counter = 1;
   private services = [
     {
@@ -13,6 +16,9 @@ export class ServiceService {
     },
   ];
   getAll() {
+    // const apikeys = this.config.get('API_KEY');
+    // console.log(apikeys);
+    // return apikeys;
     return this.services;
   }
 

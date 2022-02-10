@@ -12,6 +12,9 @@ import {
 } from '@nestjs/common';
 import { CompaniesService } from '../services/companies.service';
 import { CreateCompanyDto, UpdateCompanyDto } from '../dtos/companies.dto';
+import { ApiTags } from '@nestjs/swagger';
+
+@ApiTags('companies')
 @Controller('companies')
 export class CompaniesController {
   constructor(private companiesService: CompaniesService) {}

@@ -10,10 +10,14 @@ import {
 } from '@nestjs/common';
 import { ServiceService } from '../services/service.service';
 import { CreateServiceDto, UpdateServiceDto } from '../dtos/services.dto';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+
+@ApiTags('services')
 @Controller('services')
 export class ServicesController {
   constructor(private servicesService: ServiceService) {}
   @Get()
+  @ApiOperation({ summary: 'Get all services' })
   getServices() {
     return this.servicesService.getAll();
   }

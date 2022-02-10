@@ -5,6 +5,7 @@ import { CompaniesController } from '../companies/controllers/companies.controll
 import { ServiceService } from '../companies/services/service.service';
 
 @Module({
+  imports: [],
   controllers: [ServicesController, CompaniesController],
   providers: [CompaniesService, ServiceService],
 })
