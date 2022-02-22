@@ -10,19 +10,28 @@ import {
   HttpCode,
   ParseIntPipe,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
 import { CompaniesService } from '../services/companies.service';
 import { CreateCompanyDto, UpdateCompanyDto } from '../dtos/companies.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { UserService } from '../../user/service/user.service';
 
 @ApiTags('companies')
 @Controller('companies')
 export class CompaniesController {
-  constructor(private companiesService: CompaniesService) {}
+  constructor(
+    private companiesService: CompaniesService,
+    private userService: UserService,
+  ) {}
 
   @Get()
   @HttpCode(HttpStatus.OK)
   getAll() {
     return this.companiesService.getAll();
+  }
+  @Get('/provider')
+  getAllProvider() {
+    return this.companiesService.getProvider();
   }
 
   @Get(':id')

@@ -15,12 +15,6 @@ export class ServiceService {
       isActive: false,
     },
   ];
-  getAll() {
-    // const apikeys = this.config.get('API_KEY');
-    // console.log(apikeys);
-    // return apikeys;
-    return this.services;
-  }
 
   getId(id: number) {
     const service = this.services.find((x) => x.id === id);

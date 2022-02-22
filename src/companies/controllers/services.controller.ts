@@ -18,9 +18,6 @@ export class ServicesController {
   constructor(private servicesService: ServiceService) {}
   @Get()
   @ApiOperation({ summary: 'Get all services' })
-  getServices() {
-    return this.servicesService.getAll();
-  }
   @Get(':id')
   getForId(@Param('id', ParseIntPipe) id: number) {
     return this.servicesService.getId(id);
