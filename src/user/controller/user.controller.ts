@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Controller, Get, Post, Param } from '@nestjs/common';
 import { UserService } from '../service/user.service';
 
 @Controller('user')
@@ -10,6 +10,16 @@ export class UserController {
     return {
       message: other,
     };
+  }
+  @Get('/mongo')
+  async getMongo() {
+    const other = await this.userService.getUserById();
+    return other;
+  }
+  @Get('/:id')
+  async getById(@Param('id') id: string) {
+    const userId = await this.userService.findOne(id);
+    return userId;
   }
   @Post('/params')
   getUserById() {

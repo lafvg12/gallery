@@ -29,10 +29,6 @@ export class CompaniesController {
   getAll() {
     return this.companiesService.getAll();
   }
-  @Get('/provider')
-  getAllProvider() {
-    return this.companiesService.getProvider();
-  }
 
   @Get(':id')
   @HttpCode(HttpStatus.ACCEPTED)

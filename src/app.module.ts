@@ -12,6 +12,8 @@ import { UserController } from './user/controller/user.controller';
 import { UserService } from './user/service/user.service';
 import { UserModule } from './user/user.module';
 import config from './config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { User, UserSchema } from '../src/user/entities/user.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -20,9 +22,15 @@ import config from './config';
       isGlobal: true,
       validationSchema: joi.object({
         PORT: joi.number().required(),
-        POSTGRES_DATABASE: joi.string().required(),
+        MONGO_DB: joi.string().required(),
       }),
     }),
+    MongooseModule.forFeature([
+      {
+        name: User.name,
+        schema: UserSchema,
+      },
+    ]),
     CompaniesModule,
     DatabaseModule,
     UserModule,

@@ -4,10 +4,7 @@ import { CreateCompanyDto, UpdateCompanyDto } from '../dtos/companies.dto';
 
 @Injectable()
 export class CompaniesService {
-  constructor(
-    @Inject('API') private api: string,
-    @Inject('testU') private test: string,
-  ) {}
+  constructor() {}
   private counter = 1;
   private companies: Company[] = [
     {
@@ -56,8 +53,5 @@ export class CompaniesService {
     }
     const eliminated = this.companies.splice(deleteId, 1);
     return eliminated;
-  }
-  getProvider() {
-    return `${this.api} ${this.test}`;
   }
 }

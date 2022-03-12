@@ -1,18 +1,42 @@
+import { MongoClient } from 'mongodb';
 import { Module, Global } from '@nestjs/common';
-const API = 'I am api';
-const testU = 'i am use value';
+import { MongooseModule } from '@nestjs/mongoose';
+import config from '../config'; // 👈 i
+import { ConfigType } from '@nestjs/config';
 @Global()
 @Module({
+  imports: [
+    // 👈
+    MongooseModule.forRootAsync({
+      // 👈 Implement Module
+      useFactory: (configService: ConfigType<typeof config>) => {
+        const { connection, user, password, host, port, dbName } =
+          configService.mongo;
+        return {
+          uri: `${connection}://${host}:${port}`,
+          user,
+          pass: password,
+          dbName,
+        };
+      },
+      inject: [config.KEY],
+    }),
+  ],
   providers: [
     {
-      provide: 'API',
-      useValue: API,
-    },
-    {
-      provide: 'testU',
-      useValue: testU,
+      provide: 'MONGO',
+      useFactory: async (configService: ConfigType<typeof config>) => {
+        const { connection, user, password, host, port, dbName } =
+          configService.mongo; // 👈 get mongo config
+        const uri = `${connection}://${user}:${password}@${host}:${port}/?authSource=admin&readPreference=primary`;
+        const client = new MongoClient(uri);
+        await client.connect();
+        const database = client.db(dbName);
+        return database;
+      },
+      inject: [config.KEY], //
     },
   ],
-  exports: ['API', 'testU'],
+  exports: ['MONGO', MongooseModule],
 })
 export class DatabaseModule {}

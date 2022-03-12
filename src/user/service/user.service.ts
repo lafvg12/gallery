@@ -1,16 +1,23 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { ConfigType } from '@nestjs/config'; // modulo de nest para la configuracion de variables de entorno
-import config from 'src/config';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User } from '../entities/user.entity';
+
 @Injectable()
 export class UserService {
-  constructor(
-    @Inject(config.KEY) private configService: ConfigType<typeof config>,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
   getAllUserSer() {
     return 'I am method getAllUser from service user';
   }
-  getUserById() {
-    const apikey = this.configService.database.name;
-    return apikey;
+  async getUserById() {
+    const all = await this.userModel.find().exec();
+    return all;
+  }
+  async findOne(id: string) {
+    const product = await this.userModel.findById(id).exec();
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return product;
   }
 }
