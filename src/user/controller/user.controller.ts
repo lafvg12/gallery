@@ -2,12 +2,15 @@ import { Controller, Get, Post, Param, Body, Delete } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserService } from '../service/user.service';
 import { MongoIdPipe } from '../../common/mongo-id.pipe';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
 
+@ApiTags('user')
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/')
+  @ApiOperation({ summary: 'Get all users' })
   async getAllUser() {
     const allUser = await this.userService.getUserById();
     return allUser;

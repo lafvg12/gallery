@@ -3,7 +3,6 @@ import * as joi from 'joi';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CompaniesModule } from './companies/companies.module';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config'; // modulo de nest para la configuracion de variables de entorno
 
@@ -31,7 +30,6 @@ import { User, UserSchema } from '../src/user/entities/user.entity';
         schema: UserSchema,
       },
     ]),
-    CompaniesModule,
     DatabaseModule,
     UserModule,
   ],

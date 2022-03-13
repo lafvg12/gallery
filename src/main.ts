@@ -13,7 +13,7 @@ async function bootstrap() {
   );
   const config = new DocumentBuilder()
     .setTitle('API')
-    .setDescription('Shared Delivery')
+    .setDescription('Gallery')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
