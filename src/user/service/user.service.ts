@@ -1,14 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { User } from '../entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
-  getAllUserSer() {
-    return 'I am method getAllUser from service user';
-  }
+
   async getUserById() {
     const all = await this.userModel.find().exec();
     return all;
@@ -19,5 +18,21 @@ export class UserService {
       throw new NotFoundException(`Product #${id} not found`);
     }
     return product;
+  }
+  createNewUser(data: CreateUserDto) {
+    const newUser = new this.userModel(data);
+    return newUser.save();
+  }
+  updateUser(id: string, changes: UpdateUserDto) {
+    const product = this.userModel
+      .findByIdAndUpdate(id, { $set: changes }, { new: true })
+      .exec();
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return product;
+  }
+  deleteUser(id: string) {
+    return this.userModel.findByIdAndRemove(id).exec();
   }
 }
