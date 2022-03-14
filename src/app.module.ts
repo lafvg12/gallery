@@ -13,6 +13,10 @@ import { UserModule } from './user/user.module';
 import config from './config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../src/user/entities/user.entity';
+import { ImageController } from '../src/image/controller/image.controller';
+import { ImageService } from '../src/image/service/image.service';
+import { ImageModule } from './image/image.module';
+import { Image, ImageSchema } from './image/entities/image.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -30,10 +34,17 @@ import { User, UserSchema } from '../src/user/entities/user.entity';
         schema: UserSchema,
       },
     ]),
+    MongooseModule.forFeature([
+      {
+        name: Image.name,
+        schema: ImageSchema,
+      },
+    ]),
     DatabaseModule,
     UserModule,
+    ImageModule,
   ],
-  controllers: [AppController, UserController],
-  providers: [AppService, UserService],
+  controllers: [AppController, UserController, ImageController],
+  providers: [AppService, UserService, ImageService],
 })
 export class AppModule {}
