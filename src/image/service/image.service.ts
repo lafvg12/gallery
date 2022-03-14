@@ -32,4 +32,7 @@ export class ImageService {
     }
     return product;
   }
+  deleteImage(id: string) {
+    return this.imageModel.findByIdAndRemove(id).exec();
+  }
 }

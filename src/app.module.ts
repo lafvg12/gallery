@@ -5,18 +5,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config'; // modulo de nest para la configuracion de variables de entorno
+import { MongooseModule } from '@nestjs/mongoose';
 
 import { environment } from '../environments';
 import { UserController } from './user/controller/user.controller';
 import { UserService } from './user/service/user.service';
 import { UserModule } from './user/user.module';
 import config from './config';
-import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from '../src/user/entities/user.entity';
 import { ImageController } from '../src/image/controller/image.controller';
 import { ImageService } from '../src/image/service/image.service';
 import { ImageModule } from './image/image.module';
 import { Image, ImageSchema } from './image/entities/image.entity';
+import { CategoryController } from './category/controller/category.controller';
+import { CategoryService } from './category/service/category.service';
+import { ModuleModule } from './category/module.module';
+import {
+  Category,
+  CategorySchema,
+} from '../src/category/entities/category.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -40,11 +47,23 @@ import { Image, ImageSchema } from './image/entities/image.entity';
         schema: ImageSchema,
       },
     ]),
+    MongooseModule.forFeature([
+      {
+        name: Category.name,
+        schema: CategorySchema,
+      },
+    ]),
     DatabaseModule,
     UserModule,
     ImageModule,
+    ModuleModule,
   ],
-  controllers: [AppController, UserController, ImageController],
-  providers: [AppService, UserService, ImageService],
+  controllers: [
+    AppController,
+    UserController,
+    ImageController,
+    CategoryController,
+  ],
+  providers: [AppService, UserService, ImageService, CategoryService],
 })
 export class AppModule {}
