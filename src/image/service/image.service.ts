@@ -50,7 +50,7 @@ export class ImageService {
       region: REGION,
       credentials: {
         accessKeyId: 'XXXXXX',
-        secretAccessKey: 'XXXXXX',
+        secretAccessKey: 'XXXXXXX',
       },
     };
     const s3Client = new S3Client(client);
