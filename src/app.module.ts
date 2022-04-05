@@ -4,7 +4,7 @@ import * as joi from 'joi';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
-import { ConfigModule } from '@nestjs/config'; // modulo de nest para la configuracion de variables de entorno
+import { ConfigModule, ConfigType } from '@nestjs/config'; // modulo de nest para la configuracion de variables de entorno
 import { MongooseModule } from '@nestjs/mongoose';
 
 import { environment } from '../environments';
@@ -33,6 +33,12 @@ import {
       validationSchema: joi.object({
         PORT: joi.number().required(),
         MONGO_DB: joi.string().required(),
+        MONGO_INITDB_ROOT_USERNAME: joi.string().required(),
+        MONGO_INITDB_ROOT_PASSWORD: joi.string().required(),
+        AWS_REGION: joi.string().required(),
+        AWS_BUCKET: joi.string().required(),
+        AWS_ACCESS_KEY_ID: joi.string().required(),
+        AWS_SECRET_ACCESS_KEY: joi.string().required(),
       }),
     }),
     MongooseModule.forFeature([
@@ -64,6 +70,18 @@ import {
     ImageController,
     CategoryController,
   ],
-  providers: [AppService, UserService, ImageService, CategoryService],
+  providers: [
+    AppService,
+    UserService,
+    ImageService,
+    CategoryService,
+    {
+      provide: 'AWS_CONFIG',
+      useFactory: (configService: ConfigType<typeof config>) => {
+        return configService.aws;
+      },
+      inject: [config.KEY],
+    },
+  ],
 })
 export class AppModule {}

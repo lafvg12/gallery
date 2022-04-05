@@ -1,6 +1,12 @@
 import { registerAs } from '@nestjs/config';
 
 export default registerAs('config', () => {
+  const aws: AwsConfig = {
+    region: process.env.AWS_REGION,
+    bucket: process.env.AWS_BUCKET,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  };
   return {
     database: {
       name: process.env.POSTGRES_DATABASE,
@@ -14,5 +20,13 @@ export default registerAs('config', () => {
       host: process.env.MONGO_HOST,
       connection: process.env.MONGO_CONNECTION,
     },
+    aws,
   };
 });
+
+export interface AwsConfig {
+  region: string;
+  bucket: string;
+  accessKeyId: string;
+  secretAccessKey: string;
+}

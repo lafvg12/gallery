@@ -1,8 +1,19 @@
-import { Controller, Get, Param, Post, Body, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Post,
+  Body,
+  Delete,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { ImageService } from '../service/image.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { MongoIdPipe } from '../../common/mongo-id.pipe';
 import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { diskStorage } from 'multer';
 
 @ApiTags('image')
 @Controller('image')
@@ -19,6 +30,21 @@ export class ImageController {
   @ApiOperation({ summary: 'create image' })
   createImage(@Body() payload: CreateImageDto) {
     return this.imageService.create(payload);
+  }
+
+  @Post('/upload')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      fileFilter: (req, file, cb) => {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
+          return cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
+  async uploadImage(@UploadedFile() file: Express.Multer.File) {
+    return await this.imageService.sendAws(file);
   }
 
   @Post('/:id')

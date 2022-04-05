@@ -38,3 +38,4 @@ lerna-debug.log*
 .*env
 /mongo_data
 /docker-compose.yml
+/src/image/uploads/*
