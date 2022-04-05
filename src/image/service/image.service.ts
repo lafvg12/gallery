@@ -4,9 +4,6 @@ import { Image } from '../entities/image.entity';
 import { Model } from 'mongoose';
 import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
 import AwsClient from '../libs/index';
-import { PutObjectCommand, CreateBucketCommand } from '@aws-sdk/client-s3';
-import { S3Client } from '@aws-sdk/client-s3';
-import { buffer } from 'stream/consumers';
 
 @Injectable()
 export class ImageService {
@@ -36,12 +33,12 @@ export class ImageService {
     }
     return product;
   }
+
   deleteImage(id: string) {
     return this.imageModel.findByIdAndRemove(id).exec();
   }
 
-  async sendAws(file) {
-    console.log(file.originalname);
+  async sendAws(file: Express.Multer.File) {
     const REGION = 'us-east-1'; //e.g. "us-east-1"
     const KEY = file.originalname;
     // Create an Amazon S3 service client object.
@@ -53,33 +50,24 @@ export class ImageService {
         secretAccessKey: 'XXXXXXX',
       },
     };
-    const s3Client = new S3Client(client);
+    // const s3Client = new S3Client(client);
     const params = {
       Bucket: 'gallery1989', // The name of the bucket. For example, 'sample_bucket_101'.
       Key: KEY, // The name of the object. For example, 'sample_upload.txt'.
       Body: file.buffer, // The content of the object. For example, 'Hello world!".
     };
-    console.log(file);
 
-    // awsClient.sendFile(Client, params).then((results) => {
-    //   console.log(results);
-    // });
-    const run = async () => {
-      try {
-        const results = await s3Client.send(new PutObjectCommand(params));
-        console.log(
-          'Successfully created ' +
-            params.Key +
-            ' and uploaded it to ' +
-            params.Bucket +
-            '/' +
-            params.Key,
-        );
-        return results; // For unit tests.
-      } catch (err) {
-        console.log('Error', err);
-      }
+    const param1 = {
+      Bucket: 'gallery1989',
+      Key: KEY,
     };
-    run();
+    const awsClient = new AwsClient();
+
+    const other = awsClient.sendFile(client, params).then((results) => {
+      return results.$metadata.httpStatusCode;
+    });
+    const urlG = awsClient.getUrl(param1, client);
+
+    return other;
   }
 }
