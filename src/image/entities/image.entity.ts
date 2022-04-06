@@ -4,7 +4,13 @@ import { Document } from 'mongoose';
 @Schema()
 export class Image extends Document {
   @Prop({ required: true })
-  filename: string;
+  src: string;
+
+  @Prop({ required: true })
+  height: number;
+
+  @Prop({ required: true })
+  width: number;
 
   // @Prop({ required: true })
   // description: string;

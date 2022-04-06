@@ -2,6 +2,7 @@ import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
+import sizeOf = require('buffer-image-size');
 
 import { Image } from '../entities/image.entity';
 import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
@@ -85,8 +86,13 @@ export class ImageService {
     }
 
     const urlImage = `https://${this.bucket}.s3.amazonaws.com/${KEY}`; // awsClient.getUrl(param1, this.s3Client);
+    const dimensions = sizeOf(file.buffer);
+    console.log(dimensions.width, dimensions.height);
+
     await this.create({
-      filename: urlImage,
+      src: urlImage,
+      width: dimensions.width,
+      height: dimensions.height,
     });
     return urlImage;
   }

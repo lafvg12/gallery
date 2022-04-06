@@ -4,7 +4,10 @@ export class CreateImageDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: 'The name of image' })
-  readonly filename: string;
+  readonly src: string;
+  readonly height: number;
+  readonly width: number;
+
   // @IsString()
   // @IsNotEmpty()
   // @ApiProperty({ description: 'description of image' })
