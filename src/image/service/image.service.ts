@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Image } from '../entities/image.entity';
 import { Model } from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
+
+import { Image } from '../entities/image.entity';
 import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
 import { AwsConfig } from '../../config';
 
@@ -62,7 +64,7 @@ export class ImageService {
   }
 
   async sendAws(file: Express.Multer.File) {
-    const KEY = file.originalname;
+    const KEY = uuidv4() + '-' + file.originalname;
 
     const params = {
       Bucket: this.bucket,
@@ -70,10 +72,10 @@ export class ImageService {
       Body: file.buffer,
     };
 
-    const param1 = {
-      Bucket: this.bucket,
-      Key: KEY,
-    };
+    // const param1 = {
+    //   Bucket: this.bucket,
+    //   Key: KEY,
+    // };
     const awsClient = new AwsClient();
 
     const other = await awsClient.sendFile(this.s3Client, params);
@@ -82,7 +84,7 @@ export class ImageService {
       throw new Error('Error uploading data');
     }
 
-    const urlImage = awsClient.getUrl(param1, this.s3Client);
+    const urlImage = `https://${this.bucket}.s3.amazonaws.com/${KEY}`; // awsClient.getUrl(param1, this.s3Client);
     await this.create({
       filename: urlImage,
     });
