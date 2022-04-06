@@ -24,6 +24,7 @@ import {
   Category,
   CategorySchema,
 } from '../src/category/entities/category.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
