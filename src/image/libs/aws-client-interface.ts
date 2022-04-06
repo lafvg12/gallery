@@ -6,5 +6,5 @@ export interface AwsClientInterface {
 export interface ParamGetUrl {
   Bucket: string;
   Key: string;
-  Expires: number;
+  Expires?: number;
 }
