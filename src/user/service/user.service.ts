@@ -12,6 +12,7 @@ export class UserService {
     const all = await this.userModel.find().exec();
     return all;
   }
+
   async findOne(id: string) {
     const product = await this.userModel.findById(id).exec();
     if (!product) {
@@ -19,10 +20,12 @@ export class UserService {
     }
     return product;
   }
+
   createNewUser(data: CreateUserDto) {
     const newUser = new this.userModel(data);
     return newUser.save();
   }
+
   updateUser(id: string, changes: UpdateUserDto) {
     const product = this.userModel
       .findByIdAndUpdate(id, { $set: changes }, { new: true })
@@ -32,6 +35,7 @@ export class UserService {
     }
     return product;
   }
+
   deleteUser(id: string) {
     return this.userModel.findByIdAndRemove(id).exec();
   }

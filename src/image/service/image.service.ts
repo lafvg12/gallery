@@ -42,9 +42,9 @@ export class ImageService {
     return product;
   }
 
-  create(payload: CreateImageDto) {
+  async create(payload: CreateImageDto) {
     const image = new this.imageModel(payload);
-    return image.save();
+    return await image.save();
   }
 
   update(id: string, changes: UpdateImageDto) {
@@ -62,7 +62,6 @@ export class ImageService {
   }
 
   async sendAws(file: Express.Multer.File) {
-    const REGION = this.REGION; //e.g. "us-east-1"
     const KEY = file.originalname;
 
     const params = {
@@ -77,11 +76,16 @@ export class ImageService {
     };
     const awsClient = new AwsClient();
 
-    const other = awsClient.sendFile(this.s3Client, params).then((results) => {
-      return results.$metadata.httpStatusCode;
-    });
+    const other = await awsClient.sendFile(this.s3Client, params);
+
+    if (other.$metadata.httpStatusCode !== 200) {
+      throw new Error('Error uploading data');
+    }
+
     const urlImage = awsClient.getUrl(param1, this.s3Client);
-    console.log(urlImage);
-    return other;
+    await this.create({
+      filename: urlImage,
+    });
+    return urlImage;
   }
 }

@@ -44,16 +44,10 @@ export class ImageController {
     }),
   )
   async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    const final = await this.imageService.sendAws(file);
-    if (final === 200) {
-      return {
-        message: 'uploaded',
-      };
-    } else {
-      return {
-        message: 'not uploaded',
-      };
-    }
+    const url = await this.imageService.sendAws(file);
+    return {
+      url,
+    };
   }
 
   @Post('/:id')
