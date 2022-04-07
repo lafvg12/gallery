@@ -87,7 +87,6 @@ export class ImageService {
 
     const urlImage = `https://${this.bucket}.s3.amazonaws.com/${KEY}`; // awsClient.getUrl(param1, this.s3Client);
     const dimensions = sizeOf(file.buffer);
-    console.log(dimensions.width, dimensions.height);
 
     await this.create({
       src: urlImage,

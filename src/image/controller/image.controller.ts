@@ -13,7 +13,6 @@ import { ApiTags, ApiOperation } from '@nestjs/swagger';
 import { MongoIdPipe } from '../../common/mongo-id.pipe';
 import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
 
 @ApiTags('image')
 @Controller('image')
@@ -24,6 +23,12 @@ export class ImageController {
   @ApiOperation({ summary: 'Get all images' })
   getImage() {
     return this.imageService.getAllImages();
+  }
+
+  @Get('/:id')
+  @ApiOperation({ summary: 'Get all images' })
+  getImageById(@Param('id', MongoIdPipe) id: string) {
+    return this.imageService.findOne(id);
   }
 
   @Post('/')
