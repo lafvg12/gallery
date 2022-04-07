@@ -24,6 +24,7 @@ import {
   Category,
   CategorySchema,
 } from '../src/category/entities/category.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import {
     UserModule,
     ImageModule,
     ModuleModule,
+    AuthModule,
   ],
   controllers: [
     AppController,
