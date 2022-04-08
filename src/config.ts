@@ -21,6 +21,7 @@ export default registerAs('config', () => {
       connection: process.env.MONGO_CONNECTION,
     },
     aws,
+    apiKey: process.env.API_KEY,
   };
 });
 
