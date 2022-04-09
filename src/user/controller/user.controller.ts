@@ -22,6 +22,7 @@ export class UserController {
   }
 
   @Post('/create')
+  @ApiOperation({ summary: 'create user' })
   createUser(@Body() payload: CreateUserDto) {
     const response = this.userService.createNewUser(payload);
     return response;
