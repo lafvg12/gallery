@@ -4,7 +4,7 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: 'The name of the company' })
-  readonly name: string;
+  readonly role: string;
   @IsString()
   @IsNotEmpty()
   @ApiProperty({ description: 'The name of the company' })

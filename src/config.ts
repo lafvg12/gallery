@@ -22,6 +22,7 @@ export default registerAs('config', () => {
     },
     aws,
     apiKey: process.env.API_KEY,
+    jwtSecret: process.env.JWT_SECRET,
   };
 });
 

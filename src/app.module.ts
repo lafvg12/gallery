@@ -42,6 +42,7 @@ import { AuthModule } from './auth/auth.module';
         AWS_ACCESS_KEY_ID: joi.string().required(),
         AWS_SECRET_ACCESS_KEY: joi.string().required(),
         API_KEY: joi.number().required(),
+        JWT_SECRET: joi.string().required(),
       }),
     }),
     MongooseModule.forFeature([

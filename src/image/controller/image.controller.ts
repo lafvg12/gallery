@@ -8,17 +8,22 @@ import {
   UploadedFile,
   UseInterceptors,
 } from '@nestjs/common';
-import { ImageService } from '../service/image.service';
 import { ApiTags, ApiOperation } from '@nestjs/swagger';
-import { MongoIdPipe } from '../../common/mongo-id.pipe';
-import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
+import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
+import { ImageService } from '../service/image.service';
+import { UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../../../src/auth/guards/jwt-auth.guard';
+import { Public } from '../../../src/auth/decorators/nombre.decorator';
+
+@UseGuards(JwtAuthGuard)
 @ApiTags('image')
 @Controller('image')
 export class ImageController {
   constructor(private readonly imageService: ImageService) {}
-
+  @Public()
   @Get('/all')
   @ApiOperation({ summary: 'Get all images' })
   getImage() {
