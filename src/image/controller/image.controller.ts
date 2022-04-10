@@ -16,9 +16,13 @@ import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
 import { ImageService } from '../service/image.service';
 import { UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from '../../../src/auth/guards/jwt-auth.guard';
-import { Public } from '../../../src/auth/decorators/nombre.decorator';
+import { RolesGuard } from '../../../src/auth/guards/roles.guard';
 
-@UseGuards(JwtAuthGuard)
+import { Public } from '../../../src/auth/decorators/nombre.decorator';
+import { Roles } from '../../../src/auth/decorators/roles.decorator';
+import { Role } from '../../../src/auth/models/roles.model';
+
+@UseGuards(JwtAuthGuard, RolesGuard)
 @ApiTags('image')
 @Controller('image')
 export class ImageController {
@@ -42,6 +46,7 @@ export class ImageController {
     return this.imageService.create(payload);
   }
 
+  @Roles(Role.ADMIN)
   @Post('/upload')
   @UseInterceptors(
     FileInterceptor('file', {
@@ -60,6 +65,7 @@ export class ImageController {
     };
   }
 
+  @Roles(Role.ADMIN)
   @Post('/:id')
   @ApiOperation({ summary: 'update image' })
   updateImage(
@@ -68,6 +74,8 @@ export class ImageController {
   ) {
     return this.imageService.update(id, payload);
   }
+
+  @Roles(Role.ADMIN)
   @Delete('/:id')
   @ApiOperation({ summary: 'Get images for Id' })
   deleteImage(@Param('id', MongoIdPipe) id: string) {

@@ -28,7 +28,6 @@ class AwsClient implements AwsClientInterface {
       ...param,
       Expires: 900, // S3 default is 900 seconds (15 minutes)
     });
-    console.log(signedUrl);
     return signedUrl;
   }
 }
