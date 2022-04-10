@@ -9,6 +9,7 @@ import { UpdateImageDto, CreateImageDto } from '../dtos/image.dto';
 import { AwsConfig } from '../../config';
 
 import AwsClient from '../libs/index';
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
 
 @Injectable()
 export class ImageService {
@@ -36,9 +37,16 @@ export class ImageService {
     const images = this.imageModel.find().exec();
     return images;
   }
-
   async findOne(id: string) {
     const product = await this.imageModel.findById(id).exec();
+    if (!product) {
+      throw new NotFoundException(`Product #${id} not found`);
+    }
+    return product;
+  }
+
+  async findOneImageUser(id: string) {
+    const product = await this.imageModel.find({ idUser: id }).exec();
     if (!product) {
       throw new NotFoundException(`Product #${id} not found`);
     }
@@ -64,7 +72,7 @@ export class ImageService {
     return this.imageModel.findByIdAndRemove(id).exec();
   }
 
-  async sendAws(file: Express.Multer.File) {
+  async sendAws(file: Express.Multer.File, id: MongoIdPipe) {
     const KEY = uuidv4() + '-' + file.originalname;
 
     const params = {
@@ -92,6 +100,7 @@ export class ImageService {
       src: urlImage,
       width: dimensions.width,
       height: dimensions.height,
+      idUser: id,
     });
     return urlImage;
   }

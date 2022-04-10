@@ -40,6 +40,12 @@ export class ImageController {
     return this.imageService.findOne(id);
   }
 
+  @Get('user/:id')
+  @ApiOperation({ summary: 'Get all images' })
+  getImageByIdUser(@Param('id', MongoIdPipe) id: string) {
+    return this.imageService.findOneImageUser(id);
+  }
+
   @Post('/')
   @ApiOperation({ summary: 'create image' })
   createImage(@Body() payload: CreateImageDto) {
@@ -47,7 +53,7 @@ export class ImageController {
   }
 
   @Roles(Role.ADMIN)
-  @Post('/upload')
+  @Post('/upload/:id')
   @UseInterceptors(
     FileInterceptor('file', {
       fileFilter: (req, file, cb) => {
@@ -58,8 +64,11 @@ export class ImageController {
       },
     }),
   )
-  async uploadImage(@UploadedFile() file: Express.Multer.File) {
-    const url = await this.imageService.sendAws(file);
+  async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+    @Param('id', MongoIdPipe) id: MongoIdPipe,
+  ) {
+    const url = await this.imageService.sendAws(file, id);
     return {
       url,
     };

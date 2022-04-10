@@ -1,5 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
 export class CreateImageDto {
   @IsString()
   @IsNotEmpty()
@@ -7,6 +8,7 @@ export class CreateImageDto {
   readonly src: string;
   readonly height: number;
   readonly width: number;
+  readonly idUser: MongoIdPipe;
 
   // @IsString()
   // @IsNotEmpty()

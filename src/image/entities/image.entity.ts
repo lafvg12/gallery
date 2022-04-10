@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { MongoIdPipe } from '../../common/mongo-id.pipe';
 
 @Schema()
 export class Image extends Document {
@@ -11,6 +12,9 @@ export class Image extends Document {
 
   @Prop({ required: true })
   width: number;
+
+  @Prop({ required: true })
+  idUser: MongoIdPipe;
 
   // @Prop({ required: true })
   // description: string;
