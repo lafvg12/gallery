@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, Param } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
@@ -9,12 +9,15 @@ export class UserService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async getUserById() {
-    const all = await this.userModel.find().exec();
+    const all = await this.userModel.find().select('-password').exec();
     return all;
   }
 
   async findOne(id: string) {
-    const product = await this.userModel.findById(id).exec();
+    const product = await this.userModel
+      .findById(id)
+      .select('-password')
+      .exec();
     if (!product) {
       throw new NotFoundException(`Product #${id} not found`);
     }
