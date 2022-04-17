@@ -12,7 +12,7 @@ async function bootstrap() {
     }),
   );
   const config = new DocumentBuilder()
-    .setTitle('API GALLERY APP')
+    .setTitle('API GALLERY APP ')
     .setDescription('GalleryApp')
     .setVersion('1.0')
     .build();
