@@ -2,7 +2,8 @@ import { Controller, Get, Post, Param, Body, Delete } from '@nestjs/common';
 import { CreateUserDto, UpdateUserDto } from '../dtos/user.dto';
 import { UserService } from '../service/user.service';
 import { MongoIdPipe } from '../../common/mongo-id.pipe';
-import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiQuery } from '@nestjs/swagger';
+import { Role } from '../../auth/models/roles.model';
 
 @ApiTags('user')
 @Controller('user')

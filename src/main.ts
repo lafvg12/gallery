@@ -12,8 +12,8 @@ async function bootstrap() {
     }),
   );
   const config = new DocumentBuilder()
-    .setTitle('API')
-    .setDescription('Gallery')
+    .setTitle('API GALLERY APP')
+    .setDescription('GalleryApp')
     .setVersion('1.0')
     .build();
   const document = SwaggerModule.createDocument(app, config);
