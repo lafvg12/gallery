@@ -29,7 +29,7 @@
     "@nestjs/jwt": "^8.0.0",
     "@nestjs/mapped-types": "^1.0.1",
     "@nestjs/mongoose": "^9.0.2",
-    "@nestjs/passport": "^8.2.1",
+    "@nestjs/passport": "^9.0.3",
     "@nestjs/platform-express": "^8.0.0",
     "@nestjs/swagger": "^5.2.0",
     "all": "^0.0.0",
